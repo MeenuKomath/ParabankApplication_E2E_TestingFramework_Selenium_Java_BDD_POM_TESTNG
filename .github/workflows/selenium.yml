@@ -1,0 +1,60 @@
+name: ParaBank Selenium E2E Tests
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'Browser to run tests on'
+        required: true
+        default: 'chrome'
+        type: choice
+        options:
+          - chrome
+          - edge
+      tags:
+        description: 'Cucumber tags to execute'
+        required: false
+        default: '@Smoke'
+
+jobs:
+  run-automation-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Setup Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
+      - name: Run Maven TestNG Cucumber Suite
+        run: |
+          mvn clean test \
+            -Dbrowser=${{ github.event.inputs.browser || 'chrome' }} \
+            -Dheadless=true \
+            -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@Smoke' }}"
+
+      - name: Upload Test Reports, Logs & Screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: parabank-test-reports-${{ github.run_number }}
+          path: |
+            target/extent-reports/
+            target/cucumber-reports/
+            target/screenshots/
+            target/logs/
+          retention-days: 14
