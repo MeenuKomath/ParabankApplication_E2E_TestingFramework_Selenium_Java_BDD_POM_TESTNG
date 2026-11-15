@@ -5,18 +5,15 @@ Feature: ParaBank Update Contact Info Functionality
     When user logs in using Excel sheet "LoginData" and row 0
 
   @Smoke @UpdateContact
-  Scenario: Verify user can update contact information and persist changes
+  Scenario Outline: Verify user can update contact information and persist changes using Excel row <RowNumber>
     Given user navigates to the Update Contact Info page
-    When user updates contact information with the following details:
-
-      | FirstName | John             |
-      | LastName  | Smith            |
-      | Address   | 742 Evergreen St |
-      | City      | Beverly Hills    |
-      | State     | CA               |
-      | ZipCode   | 90210            |
-      | Phone     | 310-555-0192     |
+    When user updates contact information from Excel sheet "ContactData" and row <RowNumber>
     And user clicks the Update Profile button
     Then user should see the "Profile Updated" confirmation message
     When user navigates back to the Update Contact Info page
-    Then the updated address "742 Evergreen St" and phone "310-555-0192" should be saved
+    Then the updated contact details from Excel sheet "ContactData" and row <RowNumber> should be saved
+
+    Examples:
+
+      | RowNumber |
+      | 0         |

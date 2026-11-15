@@ -8,9 +8,11 @@ import org.openqa.selenium.edge.EdgeOptions;
 import java.time.Duration;
 
 public class DriverManager {
+
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static void initDriver(String browser) {
+
         boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"));
 
         if (browser.equalsIgnoreCase("chrome")) {

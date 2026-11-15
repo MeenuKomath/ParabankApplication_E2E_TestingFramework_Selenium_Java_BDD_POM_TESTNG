@@ -5,13 +5,13 @@ Feature: ParaBank Request Loan Functionality
     When user logs in using Excel sheet "LoginData" and row 0
 
   @Smoke @RequestLoan
-  Scenario Outline: Verify loan application outcome for <ScenarioType>
+  Scenario Outline: Verify loan application outcome using Excel data row <RowNumber>
     Given user navigates to the Request Loan page
-    When user applies for a loan of "<LoanAmount>" with down payment "<DownPayment>"
-    Then user should see the "Loan Request Processed" confirmation with status "<ExpectedStatus>"
+    When user applies for a loan using Excel sheet "LoanData" and row <RowNumber>
+    Then user should see the "Loan Request Processed" confirmation matching Excel sheet "LoanData" and row <RowNumber>
 
     Examples:
 
-      | ScenarioType      | LoanAmount | DownPayment | ExpectedStatus |
-      | Approved Loan     | 100.00     | 20.00       | Approved       |
-      | Insufficient Down | 1000000.00 | 10.00       | Denied         |
+      | RowNumber |
+      | 0         |
+      | 1         |

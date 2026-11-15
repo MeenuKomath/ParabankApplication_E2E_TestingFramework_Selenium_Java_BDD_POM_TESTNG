@@ -39,15 +39,12 @@ public class LoginSteps {
         String expectedHeading = testData.get(rowIndex).get("ExpectedResult");
 
         String actualHeading = loginPage.getPageHeadingText();
-        Assert.assertTrue(
-                actualHeading.contains(expectedHeading),
-                "Expected heading to contain '" + expectedHeading + "' but found '" + actualHeading + "'"
-        );
+        Assert.assertTrue(actualHeading.contains(expectedHeading),
+                "Expected heading to contain '" + expectedHeading + "' but found '" + actualHeading + "'");
 
         if (expectedHeading.equalsIgnoreCase("Accounts Overview")) {
             Assert.assertTrue(loginPage.isLogoutDisplayed(), "Log Out link should be visible after login.");
-            Assert.assertTrue(
-                    DriverManager.getDriver().getCurrentUrl().contains("overview.htm"),
+            Assert.assertTrue(DriverManager.getDriver().getCurrentUrl().contains("overview.htm"),
                     "URL should redirect to overview.htm"
             );
         }

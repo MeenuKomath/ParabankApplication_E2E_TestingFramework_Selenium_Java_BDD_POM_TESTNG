@@ -66,6 +66,16 @@ jobs:
             -Ddataproviderthreadcount=${{ github.event.inputs.threads || '3' }} \
             -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@Smoke' }}"
 
+      - name: Convert Videos to Browser-Compatible H.264 MP4
+        if: always()
+        run: |
+          if [ -d "target/videos" ]; then
+            for f in target/videos/*.mp4; do
+              [ -e "$f" ] || continue
+              ffmpeg -y -i "$f" -c:v libx264 -pix_fmt yuv420p -movflags +faststart "${f%.mp4}_web.mp4" && mv "${f%.mp4}_web.mp4" "$f"
+            done
+          fi
+
       - name: Upload Test Reports, Logs, Screenshots & Videos
         if: always()
         uses: actions/upload-artifact@v4

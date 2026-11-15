@@ -32,8 +32,9 @@ public class BillPayPage {
     private final By fromAccountDropdown = By.name("fromAccountId");
     private final By sendPaymentButton = By.xpath("//input[@value='Send Payment']");
 
-    // Confirmation Locators
+    // Confirmation & Error Locators
     private final By billPayResultSection = By.id("billpayResult");
+    private final By billPayErrorSection = By.id("billpayError");
     private final By resultHeading = By.xpath("//div[@id='billpayResult']/h1");
     private final By payeeNameResult = By.id("payeeName");
     private final By amountResult = By.id("amount");
@@ -52,17 +53,23 @@ public class BillPayPage {
     }
 
     public void enterPayeeDetails(Map<String, String> details) {
-        log.info("Entering Payee details for: {}", details.get("PayeeName"));
-        driver.findElement(payeeNameField).sendKeys(details.get("PayeeName"));
-        driver.findElement(addressField).sendKeys(details.get("Address"));
-        driver.findElement(cityField).sendKeys(details.get("City"));
-        driver.findElement(stateField).sendKeys(details.get("State"));
-        driver.findElement(zipCodeField).sendKeys(details.get("ZipCode"));
-        driver.findElement(phoneField).sendKeys(details.get("Phone"));
-        driver.findElement(accountField).sendKeys(details.get("Account"));
-        driver.findElement(verifyAccountField).sendKeys(details.get("Account"));
-        driver.findElement(amountField).sendKeys(details.get("Amount"));
+        log.info("Entering Payee details from Excel map: {}", details);
+        clearAndType(payeeNameField, details.getOrDefault("PayeeName", ""));
+        clearAndType(addressField, details.getOrDefault("Address", ""));
+        clearAndType(cityField, details.getOrDefault("City", ""));
+        clearAndType(stateField, details.getOrDefault("State", ""));
+        clearAndType(zipCodeField, details.getOrDefault("ZipCode", ""));
+        clearAndType(phoneField, details.getOrDefault("Phone", ""));
+        clearAndType(accountField, details.getOrDefault("Account", ""));
+        clearAndType(verifyAccountField, details.getOrDefault("Account", ""));
+        clearAndType(amountField, details.getOrDefault("Amount", ""));
         VideoRecorderUtil.captureStepFrame();
+    }
+
+    private void clearAndType(By locator, String value) {
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.clear();
+        element.sendKeys(value);
     }
 
     public String selectFromAccountByIndex(int index) {
@@ -83,9 +90,18 @@ public class BillPayPage {
     }
 
     public boolean isBillPaymentCompleteDisplayed() {
-        WebElement result = wait.until(ExpectedConditions.visibilityOfElementLocated(billPayResultSection));
+        log.info("Waiting for Bill Payment confirmation section");
+        wait.until(ExpectedConditions.or(
+                ExpectedConditions.visibilityOfElementLocated(billPayResultSection),
+                ExpectedConditions.visibilityOfElementLocated(billPayErrorSection)
+        ));
         VideoRecorderUtil.captureStepFrame();
-        return result.isDisplayed();
+
+        if (!driver.findElements(billPayErrorSection).isEmpty() && driver.findElement(billPayErrorSection).isDisplayed()) {
+            log.error("ParaBank returned a Bill Pay server error: {}", driver.findElement(billPayErrorSection).getText());
+            return false;
+        }
+        return driver.findElement(billPayResultSection).isDisplayed();
     }
 
     public String getResultHeading() {

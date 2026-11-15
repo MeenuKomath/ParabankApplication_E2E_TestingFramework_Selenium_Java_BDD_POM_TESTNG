@@ -1,26 +1,3 @@
-/*
-package runners;
-
-import io.cucumber.testng.AbstractTestNGCucumberTests;
-import io.cucumber.testng.CucumberOptions;
-import org.testng.annotations.Listeners;
-
-@SuppressWarnings({"deprecation", "removal"})
-@Listeners(listeners.TestListener.class)
-@CucumberOptions(
-        features = "src/test/resources/features",
-        glue = {"stepdefinitions", "hooks"},
-        tags = "@Smoke",
-        plugin = {
-                "pretty",
-                "html:target/cucumber-reports/cucumber.html",
-                "json:target/cucumber-reports/cucumber.json"
-        },
-        monochrome = true
-)
-public class TestRunner extends AbstractTestNGCucumberTests {
-}
-*/
 package runners;
 
 import io.cucumber.testng.AbstractTestNGCucumberTests;

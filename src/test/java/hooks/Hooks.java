@@ -14,10 +14,12 @@ import utils.ScenarioContext;
 import utils.VideoRecorderUtil;
 
 public class Hooks {
+
     private static final Logger log = LoggerUtil.getLogger(Hooks.class);
 
     @Before
     public void setUp(Scenario scenario) {
+
         log.info("Starting Scenario: {}", scenario.getName());
         DriverManager.initDriver(ConfigReader.getBrowser());
         VideoRecorderUtil.startRecording(DriverManager.getDriver(), scenario.getName());
