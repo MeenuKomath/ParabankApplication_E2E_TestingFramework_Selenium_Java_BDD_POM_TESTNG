@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.apache.logging.log4j.Logger;
 import utils.LoggerUtil;
+import utils.VideoRecorderUtil;
+
 import java.time.Duration;
 
 public class LoginPage {
@@ -31,16 +33,20 @@ public class LoginPage {
             log.info("Entering username: {}", username);
             wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField)).clear();
             driver.findElement(usernameField).sendKeys(username);
+            VideoRecorderUtil.captureStepFrame();
         }
 
         public void enterPassword(String password) {
             log.info("Entering password: ********");
             driver.findElement(passwordField).clear();
             driver.findElement(passwordField).sendKeys(password);
+            VideoRecorderUtil.captureStepFrame();
         }
 
         public void clickLoginButton() {
+
             driver.findElement(loginButton).click();
+            VideoRecorderUtil.captureStepFrame();
         }
 
     public String getPageHeadingText() {

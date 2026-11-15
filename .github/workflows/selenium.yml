@@ -19,6 +19,17 @@ on:
         description: 'Cucumber tags to execute'
         required: false
         default: '@Smoke'
+      threads:
+        description: 'Parallel thread count (1 to 5)'
+        required: false
+        default: '3'
+        type: choice
+        options:
+          - '1'
+          - '2'
+          - '3'
+          - '4'
+          - '5'
 
 jobs:
   run-automation-tests:
@@ -36,18 +47,26 @@ jobs:
           cache: 'maven'
 
       - name: Setup Google Chrome
+        if: ${{ (github.event.inputs.browser || 'chrome') == 'chrome' }}
         uses: browser-actions/setup-chrome@v1
         with:
           chrome-version: stable
+
+      - name: Setup Microsoft Edge
+        if: ${{ github.event.inputs.browser == 'edge' }}
+        uses: browser-actions/setup-edge@v1
+        with:
+          edge-version: stable
 
       - name: Run Maven TestNG Cucumber Suite
         run: |
           mvn clean test \
             -Dbrowser=${{ github.event.inputs.browser || 'chrome' }} \
             -Dheadless=true \
+            -Ddataproviderthreadcount=${{ github.event.inputs.threads || '3' }} \
             -Dcucumber.filter.tags="${{ github.event.inputs.tags || '@Smoke' }}"
 
-      - name: Upload Test Reports, Logs & Screenshots
+      - name: Upload Test Reports, Logs, Screenshots & Videos
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -56,5 +75,6 @@ jobs:
             target/extent-reports/
             target/cucumber-reports/
             target/screenshots/
+            target/videos/
             target/logs/
           retention-days: 14
