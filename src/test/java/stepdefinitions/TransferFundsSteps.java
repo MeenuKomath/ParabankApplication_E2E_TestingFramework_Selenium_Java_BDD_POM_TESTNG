@@ -73,17 +73,20 @@ public class TransferFundsSteps {
         double updatedSourceBalance = accountsOverviewPage.getAccountBalance(sourceAccountId);
         double updatedNewBalance = accountsOverviewPage.getAccountBalance(newAccountId);
 
-        Assert.assertEquals(
-                updatedSourceBalance,
-                initialSourceBalance - transferredAmount,
-                0.01,
-                "Source account balance should decrease by $" + transferredAmount
+        // 1. Source account is shared across parallel threads, so verify it decreased by at least the transferred amount
+        Assert.assertTrue(
+                updatedSourceBalance <= (initialSourceBalance - transferredAmount + 0.01),
+                "Source account balance should decrease by at least $" + transferredAmount
+                        + " (Initial: " + initialSourceBalance + ", Updated: " + updatedSourceBalance + ")"
         );
+
+        // 2. Newly created account is isolated to this thread, so verify exact +$50.00 increase
         Assert.assertEquals(
                 updatedNewBalance,
                 initialNewBalance + transferredAmount,
                 0.01,
-                "Newly created account balance should increase by $" + transferredAmount
+                "Newly created account balance should increase by exact $" + transferredAmount
         );
     }
+
 }

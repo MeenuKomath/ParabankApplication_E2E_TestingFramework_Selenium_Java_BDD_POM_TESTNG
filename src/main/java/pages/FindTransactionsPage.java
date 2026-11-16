@@ -54,6 +54,15 @@ public class FindTransactionsPage {
         return account;
     }
 
+    public void selectAccountByValue(String accountNumber) {
+        WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(accountIdDropdown));
+        wait.until(d -> new Select(dropdown).getOptions().size() > 0);
+        Select select = new Select(dropdown);
+        select.selectByVisibleText(accountNumber);
+        log.info("Selected exact account for transaction search: {}", accountNumber);
+        VideoRecorderUtil.captureStepFrame();
+    }
+
     public void searchByAmount(String amount) {
         log.info("Searching transactions by amount: {}", amount);
         WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(amountInput));
@@ -74,28 +83,26 @@ public class FindTransactionsPage {
 
     public boolean areTransactionResultsDisplayed() {
         wait.until(ExpectedConditions.visibilityOfElementLocated(resultContainer));
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(transactionRows));
+        // Wait until real transaction rows load (ignoring AngularJS 'NaN-NaN-NaN undefined' placeholder rows)
+        wait.until(d -> {
+            List<WebElement> rows = d.findElements(transactionRows);
+            return !rows.isEmpty() && rows.stream().anyMatch(r -> {
+                String text = r.getText().trim();
+                return !text.isEmpty() && !text.contains("NaN-NaN-NaN") && !text.contains("undefined");
+            });
+        });
         VideoRecorderUtil.captureStepFrame();
         return !driver.findElements(transactionRows).isEmpty();
     }
 
     public List<String> getTransactionRowTexts() {
-        wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(transactionRows));
+        areTransactionResultsDisplayed();
         List<String> rows = driver.findElements(transactionRows)
                 .stream()
                 .map(row -> row.getText().trim())
+                .filter(text -> !text.isEmpty() && !text.contains("NaN-NaN-NaN") && !text.contains("undefined"))
                 .collect(Collectors.toList());
-        log.info("Found {} transaction record(s): {}", rows.size(), rows);
+        log.info("Found {} valid transaction record(s): {}", rows.size(), rows);
         return rows;
     }
-    // Add this method inside FindTransactionsPage.java:
-    public void selectAccountByValue(String accountNumber) {
-        WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(accountIdDropdown));
-        wait.until(d -> new Select(dropdown).getOptions().size() > 0);
-        Select select = new Select(dropdown);
-        select.selectByVisibleText(accountNumber);
-        log.info("Selected exact account for transaction search: {}", accountNumber);
-        VideoRecorderUtil.captureStepFrame();
-    }
-
 }

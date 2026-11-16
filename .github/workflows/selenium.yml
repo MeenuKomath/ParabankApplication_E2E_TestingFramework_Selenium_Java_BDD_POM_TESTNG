@@ -58,6 +58,11 @@ jobs:
         with:
           edge-version: stable
 
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
       - name: Run Maven TestNG Cucumber Suite
         run: |
           mvn clean test \
