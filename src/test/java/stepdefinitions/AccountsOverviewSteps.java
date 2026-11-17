@@ -40,9 +40,7 @@ public class AccountsOverviewSteps {
     public void verifyAccountsOverviewTableHeaders(DataTable expectedHeadersTable) {
         List<String> expectedHeaders = expectedHeadersTable.asList();
         List<String> actualHeaders = accountsOverviewPage.getTableHeaderTexts();
-        Assert.assertEquals(
-                actualHeaders,
-                expectedHeaders,
+        Assert.assertEquals(actualHeaders, expectedHeaders,
                 "Accounts Overview table headers do not match."
         );
     }
@@ -51,10 +49,7 @@ public class AccountsOverviewSteps {
     public void verifyTotalBalanceCalculation() {
         double expectedSum = accountsOverviewPage.calculateSumOfIndividualBalances();
         double actualTotal = accountsOverviewPage.getDisplayedTotalBalance();
-        Assert.assertEquals(
-                actualTotal,
-                expectedSum,
-                0.01,
+        Assert.assertEquals(actualTotal, expectedSum, 0.01,
                 "Displayed Total balance does not match the sum of individual account balances."
         );
     }
@@ -65,9 +60,7 @@ public class AccountsOverviewSteps {
         String accountHolderName = testData.get(rowIndex).get("AccountHolderName");
         String expectedWelcomeText = "Welcome " + accountHolderName;
 
-        Assert.assertEquals(
-                accountsOverviewPage.getWelcomeMessageText(),
-                expectedWelcomeText,
+        Assert.assertEquals(accountsOverviewPage.getWelcomeMessageText(), expectedWelcomeText,
                 "Welcome message text did not match the Account Holder Name from Excel."
         );
     }
@@ -82,9 +75,7 @@ public class AccountsOverviewSteps {
         List<String> expectedLinks = expectedLinksTable.asList();
         List<String> actualLinks = accountsOverviewPage.getAccountServicesLinkTexts();
 
-        Assert.assertEquals(
-                actualLinks,
-                expectedLinks,
+        Assert.assertEquals(actualLinks, expectedLinks,
                 "Account Services links do not match the expected menu items."
         );
     }
@@ -100,14 +91,8 @@ public class AccountsOverviewSteps {
         String expectedAccountId = ScenarioContext.get("SELECTED_ACCOUNT_ID", String.class);
         String actualAccountId = accountsOverviewPage.getAccountDetailsPageAccountId();
 
-        Assert.assertTrue(
-                DriverManager.getDriver().getCurrentUrl().contains("activity.htm"),
-                "URL should redirect to activity.htm"
-        );
-        Assert.assertEquals(
-                actualAccountId,
-                expectedAccountId,
-                "Account Details page should display the clicked account number."
+        Assert.assertTrue(DriverManager.getDriver().getCurrentUrl().contains("activity.htm"), "URL should redirect to activity.htm");
+        Assert.assertEquals(actualAccountId, expectedAccountId, "Account Details page should display the clicked account number."
         );
     }
 }

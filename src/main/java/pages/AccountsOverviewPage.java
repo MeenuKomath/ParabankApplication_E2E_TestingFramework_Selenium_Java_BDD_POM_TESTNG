@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AccountsOverviewPage {
+
     private static final Logger log = LoggerUtil.getLogger(AccountsOverviewPage.class);
     private final WebDriver driver;
     private final WebDriverWait wait;
@@ -95,6 +96,7 @@ public class AccountsOverviewPage {
     }
 
     public double getDisplayedTotalBalance() {
+
         String totalText = wait.until(ExpectedConditions.visibilityOfElementLocated(totalBalanceCell)).getText().trim();
         double total = parseCurrency(totalText);
         log.info("Displayed Total balance on page: {}", total);
@@ -103,6 +105,7 @@ public class AccountsOverviewPage {
     }
 
     public String clickFirstAccountAndGetNumber() {
+
         WebElement accountLink = wait.until(ExpectedConditions.elementToBeClickable(firstAccountLink));
         String selectedAccountId = accountLink.getText().trim();
         log.info("Clicking account number link: {}", selectedAccountId);
@@ -112,6 +115,7 @@ public class AccountsOverviewPage {
     }
 
     public String getAccountDetailsPageAccountId() {
+
         String displayedId = wait.until(ExpectedConditions.visibilityOfElementLocated(accountDetailsId)).getText().trim();
         log.info("Navigated to Account Details for ID: {}", displayedId);
         VideoRecorderUtil.captureStepFrame();
@@ -119,6 +123,7 @@ public class AccountsOverviewPage {
     }
 
     public String getWelcomeMessageText() {
+
         String text = wait.until(ExpectedConditions.visibilityOfElementLocated(welcomeMessage)).getText().trim();
         log.info("Retrieved welcome message: {}", text);
         VideoRecorderUtil.captureStepFrame();
@@ -126,6 +131,7 @@ public class AccountsOverviewPage {
     }
 
     public boolean isAccountServicesHeaderDisplayed() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(accountServicesHeader)).isDisplayed();
     }
 

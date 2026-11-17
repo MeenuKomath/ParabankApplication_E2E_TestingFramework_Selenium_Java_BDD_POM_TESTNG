@@ -12,25 +12,37 @@ public class DriverManager {
     private static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static void initDriver(String browser) {
+        if (browser == null || browser.isBlank()) {
+            browser = System.getProperty("browser", "chrome");
+        }
 
         boolean isHeadless = Boolean.parseBoolean(System.getProperty("headless", "false"));
 
-        if (browser.equalsIgnoreCase("chrome")) {
-            ChromeOptions options = new ChromeOptions();
-            if (isHeadless) {
-                options.addArguments("--headless=new");
-                options.addArguments("--no-sandbox");
-                options.addArguments("--disable-dev-shm-usage");
-                options.addArguments("--window-size=1920,1080");
-            }
-            driver.set(new ChromeDriver(options));
-        } else if (browser.equalsIgnoreCase("edge")) {
-            EdgeOptions options = new EdgeOptions();
-            if (isHeadless) {
-                options.addArguments("--headless=new");
-                options.addArguments("--window-size=1920,1080");
-            }
-            driver.set(new EdgeDriver(options));
+        switch (browser.trim().toLowerCase()) {
+            case "chrome":
+                ChromeOptions chromeOptions = new ChromeOptions();
+                if (isHeadless) {
+                    chromeOptions.addArguments("--headless=new");
+                    chromeOptions.addArguments("--no-sandbox");
+                    chromeOptions.addArguments("--disable-dev-shm-usage");
+                    chromeOptions.addArguments("--window-size=1920,1080");
+                }
+                driver.set(new ChromeDriver(chromeOptions));
+                break;
+
+            case "edge":
+                EdgeOptions edgeOptions = new EdgeOptions();
+                if (isHeadless) {
+                    edgeOptions.addArguments("--headless=new");
+                    edgeOptions.addArguments("--no-sandbox");
+                    edgeOptions.addArguments("--disable-dev-shm-usage");
+                    edgeOptions.addArguments("--window-size=1920,1080");
+                }
+                driver.set(new EdgeDriver(edgeOptions));
+                break;
+
+            default:
+                throw new IllegalArgumentException("Unsupported browser: " + browser + ". Use 'chrome' or 'edge'.");
         }
 
         if (!isHeadless) {

@@ -8,7 +8,6 @@ import org.testng.Assert;
 import pages.BillPayPage;
 import utils.ExcelReader;
 import utils.ScenarioContext;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +24,7 @@ public class BillPaySteps {
 
     @When("user enters payee details and submits a bill payment from Excel sheet {string} and row {int}")
     public void enterPayeeDetailsAndSubmitFromExcel(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         Map<String, String> payeeData = testData.get(rowIndex);
 
@@ -36,6 +36,7 @@ public class BillPaySteps {
 
     @Then("user should see the {string} bill payment confirmation matching Excel sheet {string} and row {int}")
     public void verifyBillPayConfirmationFromExcel(String expectedHeading, String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         Map<String, String> expectedData = testData.get(rowIndex);
 
