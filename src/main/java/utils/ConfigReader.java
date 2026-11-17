@@ -9,6 +9,7 @@ public class ConfigReader {
 
     static {
         try (FileInputStream fis = new FileInputStream("src/test/resources/config/config.properties")) {
+
             properties.load(fis);
         } catch (IOException e) {
             throw new RuntimeException("Failed to load config.properties file.", e);
@@ -16,14 +17,17 @@ public class ConfigReader {
     }
 
     public static String getProperty(String key) {
+
         return properties.getProperty(key);
     }
 
     public static String getUrl() {
+
         return properties.getProperty("url");
     }
 
     public static String getBrowser() {
+
         return System.getProperty("browser", properties.getProperty("browser"));
     }
 }

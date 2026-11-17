@@ -24,6 +24,7 @@ public class RequestLoanSteps {
 
     @When("user applies for a loan using Excel sheet {string} and row {int}")
     public void applyForLoanFromExcel(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         String loanAmount = testData.get(rowIndex).get("LoanAmount");
         String downPayment = testData.get(rowIndex).get("DownPayment");
@@ -35,6 +36,7 @@ public class RequestLoanSteps {
 
     @Then("user should see the {string} confirmation matching Excel sheet {string} and row {int}")
     public void verifyLoanOutcomeFromExcel(String expectedHeading, String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         String expectedStatus = testData.get(rowIndex).get("ExpectedStatus");
 

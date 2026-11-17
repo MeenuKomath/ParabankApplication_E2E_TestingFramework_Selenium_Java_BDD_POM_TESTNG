@@ -44,6 +44,7 @@ public class AccountsOverviewPage {
     }
 
     public void navigateToAccountsOverview() {
+
         log.info("Navigating to Accounts Overview page");
         wait.until(ExpectedConditions.elementToBeClickable(accountsOverviewLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(accountsTable));
@@ -51,12 +52,14 @@ public class AccountsOverviewPage {
     }
 
     public String getPageHeading() {
+
         String heading = wait.until(ExpectedConditions.visibilityOfElementLocated(pageHeading)).getText().trim();
         log.info("Retrieved Accounts Overview heading: {}", heading);
         return heading;
     }
 
     public boolean isAccountsTableDisplayed() {
+
         log.info("Verifying Accounts Overview table visibility");
         WebElement table = wait.until(ExpectedConditions.visibilityOfElementLocated(accountsTable));
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(accountRows));
@@ -65,6 +68,7 @@ public class AccountsOverviewPage {
     }
 
     public List<String> getTableHeaderTexts() {
+
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(tableHeaders));
         List<String> headers = driver.findElements(tableHeaders)
                 .stream()
@@ -76,6 +80,7 @@ public class AccountsOverviewPage {
     }
 
     public double getAccountBalance(String accountNumber) {
+
         By balanceLocator = By.xpath("//table[@id='accountTable']//a[text()='" + accountNumber + "']/parent::td/following-sibling::td[1]");
         String balanceText = wait.until(ExpectedConditions.visibilityOfElementLocated(balanceLocator)).getText().trim();
         log.info("Balance for account {}: {}", accountNumber, balanceText);
@@ -84,6 +89,7 @@ public class AccountsOverviewPage {
     }
 
     public double calculateSumOfIndividualBalances() {
+
         wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(accountRows));
         List<WebElement> rows = driver.findElements(accountRows);
         double sum = 0.0;
@@ -147,6 +153,7 @@ public class AccountsOverviewPage {
     }
 
     private double parseCurrency(String currencyText) {
+
         return Double.parseDouble(currencyText.replace("$", "").replace(",", "").trim());
     }
 }

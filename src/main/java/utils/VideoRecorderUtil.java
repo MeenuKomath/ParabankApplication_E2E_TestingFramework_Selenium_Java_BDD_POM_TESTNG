@@ -27,6 +27,7 @@ public class VideoRecorderUtil {
     private static final ThreadLocal<WebDriver> activeDriver = new ThreadLocal<>();
 
     public static void startRecording(WebDriver driver, String scenarioName) {
+
         if (driver == null) return;
         try {
             File videoDir = new File(System.getProperty("user.dir") + "/target/videos/");

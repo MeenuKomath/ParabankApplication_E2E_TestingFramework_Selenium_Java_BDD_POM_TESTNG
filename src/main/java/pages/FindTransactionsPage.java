@@ -37,6 +37,7 @@ public class FindTransactionsPage {
     }
 
     public void navigateToFindTransactionsPage() {
+
         log.info("Navigating to Find Transactions page");
         wait.until(ExpectedConditions.elementToBeClickable(findTransactionsLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(accountIdDropdown));
@@ -44,6 +45,7 @@ public class FindTransactionsPage {
     }
 
     public String selectAccountByIndex(int index) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(accountIdDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -55,6 +57,7 @@ public class FindTransactionsPage {
     }
 
     public void selectAccountByValue(String accountNumber) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(accountIdDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -64,6 +67,7 @@ public class FindTransactionsPage {
     }
 
     public void searchByAmount(String amount) {
+
         log.info("Searching transactions by amount: {}", amount);
         WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(amountInput));
         input.clear();
@@ -73,6 +77,7 @@ public class FindTransactionsPage {
     }
 
     public void searchByDate(String dateMMDDYYYY) {
+
         log.info("Searching transactions by date: {}", dateMMDDYYYY);
         WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(dateInput));
         input.clear();
@@ -81,7 +86,8 @@ public class FindTransactionsPage {
         VideoRecorderUtil.captureStepFrame();
     }
 
-    public boolean areTransactionResultsDisplayed() {
+   public boolean areTransactionResultsDisplayed() {
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(resultContainer));
         // Wait until real transaction rows load (ignoring AngularJS 'NaN-NaN-NaN undefined' placeholder rows)
         wait.until(d -> {
@@ -96,6 +102,7 @@ public class FindTransactionsPage {
     }
 
     public List<String> getTransactionRowTexts() {
+
         areTransactionResultsDisplayed();
         List<String> rows = driver.findElements(transactionRows)
                 .stream()

@@ -23,17 +23,20 @@ public class LogoutPage {
     private final By loginButton = By.xpath("//input[@value='Log In']");
 
     public LogoutPage(WebDriver driver) {
+
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public void clickLogoutLink() {
+
         log.info("Clicking Log Out link");
         wait.until(ExpectedConditions.elementToBeClickable(logoutLink)).click();
         VideoRecorderUtil.captureStepFrame();
     }
 
     public boolean isLoginPanelDisplayed() {
+
         log.info("Verifying Customer Login panel is visible after logout");
         WebElement heading = wait.until(ExpectedConditions.visibilityOfElementLocated(customerLoginHeading));
         boolean usernameVisible = wait.until(ExpectedConditions.visibilityOfElementLocated(usernameField)).isDisplayed();
@@ -43,6 +46,7 @@ public class LogoutPage {
     }
 
     public boolean isLogoutLinkHidden() {
+
         return driver.findElements(logoutLink).isEmpty();
     }
 }

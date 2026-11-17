@@ -59,14 +59,9 @@ public class OpenNewAccountSteps {
 
     @Then("user should see the {string} heading and confirmation message")
     public void verifyAccountOpenedHeadingAndMessage(String expectedHeading) {
-        Assert.assertTrue(
-                openNewAccountPage.isAccountOpenedConfirmationDisplayed(),
-                "Account Opened confirmation section should be displayed."
+        Assert.assertTrue(openNewAccountPage.isAccountOpenedConfirmationDisplayed(), "Account Opened confirmation section should be displayed."
         );
-        Assert.assertEquals(
-                openNewAccountPage.getAccountOpenedHeading(),
-                expectedHeading,
-                "Confirmation heading mismatch."
+        Assert.assertEquals(openNewAccountPage.getAccountOpenedHeading(), expectedHeading, "Confirmation heading mismatch."
         );
         Assert.assertTrue(
                 openNewAccountPage.getAccountOpenedMessage().contains("Congratulations, your account is now open."),

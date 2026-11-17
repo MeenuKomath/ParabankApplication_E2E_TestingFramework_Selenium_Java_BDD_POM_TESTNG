@@ -41,11 +41,13 @@ public class BillPayPage {
     private final By fromAccountResult = By.id("fromAccountId");
 
     public BillPayPage(WebDriver driver) {
+
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public void navigateToBillPayPage() {
+
         log.info("Navigating to Bill Pay page");
         wait.until(ExpectedConditions.elementToBeClickable(billPayLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(payeeNameField));
@@ -53,6 +55,7 @@ public class BillPayPage {
     }
 
     public void enterPayeeDetails(Map<String, String> details) {
+
         log.info("Entering Payee details from Excel map: {}", details);
         clearAndType(payeeNameField, details.getOrDefault("PayeeName", ""));
         clearAndType(addressField, details.getOrDefault("Address", ""));
@@ -67,12 +70,14 @@ public class BillPayPage {
     }
 
     private void clearAndType(By locator, String value) {
+
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.clear();
         element.sendKeys(value);
     }
 
     public String selectFromAccountByIndex(int index) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -90,11 +95,10 @@ public class BillPayPage {
     }
 
     public boolean isBillPaymentCompleteDisplayed() {
+
         log.info("Waiting for Bill Payment confirmation section");
-        wait.until(ExpectedConditions.or(
-                ExpectedConditions.visibilityOfElementLocated(billPayResultSection),
-                ExpectedConditions.visibilityOfElementLocated(billPayErrorSection)
-        ));
+        wait.until(ExpectedConditions.or(ExpectedConditions.visibilityOfElementLocated(billPayResultSection),
+                ExpectedConditions.visibilityOfElementLocated(billPayErrorSection)));
         VideoRecorderUtil.captureStepFrame();
 
         if (!driver.findElements(billPayErrorSection).isEmpty() && driver.findElement(billPayErrorSection).isDisplayed()) {
@@ -105,18 +109,22 @@ public class BillPayPage {
     }
 
     public String getResultHeading() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(resultHeading)).getText().trim();
     }
 
     public String getConfirmedPayeeName() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(payeeNameResult)).getText().trim();
     }
 
     public String getConfirmedAmount() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(amountResult)).getText().trim();
     }
 
     public String getConfirmedFromAccount() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountResult)).getText().trim();
     }
 }

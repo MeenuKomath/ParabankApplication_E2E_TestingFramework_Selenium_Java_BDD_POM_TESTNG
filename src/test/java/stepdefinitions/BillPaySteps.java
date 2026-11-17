@@ -19,6 +19,7 @@ public class BillPaySteps {
 
     @Given("user navigates to the Bill Pay page")
     public void navigateToBillPay() {
+
         billPayPage.navigateToBillPayPage();
     }
 

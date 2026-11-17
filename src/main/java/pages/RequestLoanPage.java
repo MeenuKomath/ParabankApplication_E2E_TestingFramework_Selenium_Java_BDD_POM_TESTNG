@@ -36,6 +36,7 @@ public class RequestLoanPage {
     }
 
     public void navigateToRequestLoanPage() {
+
         log.info("Navigating to Request Loan page");
         wait.until(ExpectedConditions.elementToBeClickable(requestLoanLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(loanAmountField));
@@ -43,6 +44,7 @@ public class RequestLoanPage {
     }
 
     public void enterLoanDetails(String loanAmount, String downPayment) {
+
         log.info("Entering Loan Amount: ${}, Down Payment: ${}", loanAmount, downPayment);
         WebElement amountInput = wait.until(ExpectedConditions.visibilityOfElementLocated(loanAmountField));
         amountInput.clear();
@@ -55,6 +57,7 @@ public class RequestLoanPage {
     }
 
     public void selectFromAccountByIndex(int index) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -64,22 +67,26 @@ public class RequestLoanPage {
     }
 
     public void clickApplyNowButton() {
+
         log.info("Clicking Apply Now button");
         wait.until(ExpectedConditions.elementToBeClickable(applyNowButton)).click();
         VideoRecorderUtil.captureStepFrame();
     }
 
     public boolean isLoanResultDisplayed() {
+
         WebElement result = wait.until(ExpectedConditions.visibilityOfElementLocated(requestLoanResultSection));
         VideoRecorderUtil.captureStepFrame();
         return result.isDisplayed();
     }
 
     public String getResultHeading() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(resultHeading)).getText().trim();
     }
 
     public String getLoanStatus() {
+
         String status = wait.until(ExpectedConditions.visibilityOfElementLocated(loanStatusText)).getText().trim();
         log.info("Loan Application Status: {}", status);
         VideoRecorderUtil.captureStepFrame();
@@ -87,6 +94,7 @@ public class RequestLoanPage {
     }
 
     public String getNewLoanAccountNumber() {
+
         String accountId = wait.until(ExpectedConditions.visibilityOfElementLocated(newAccountIdLink)).getText().trim();
         log.info("Generated Loan Account Number: {}", accountId);
         VideoRecorderUtil.captureStepFrame();

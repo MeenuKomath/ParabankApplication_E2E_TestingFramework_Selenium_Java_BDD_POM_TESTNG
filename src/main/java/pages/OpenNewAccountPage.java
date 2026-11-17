@@ -37,6 +37,7 @@ public class OpenNewAccountPage {
     }
 
     public void navigateToOpenNewAccountPage() {
+
         log.info("Clicking Open New Account link");
         wait.until(ExpectedConditions.elementToBeClickable(openNewAccountLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(accountTypeDropdown));
@@ -44,6 +45,7 @@ public class OpenNewAccountPage {
     }
 
     public List<String> getAvailableAccountTypes() {
+
         Select typeSelect = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(accountTypeDropdown)));
         return typeSelect.getOptions()
                 .stream()
@@ -52,6 +54,7 @@ public class OpenNewAccountPage {
     }
 
     public void selectAccountType(String accountType) {
+
         log.info("Selecting account type: {}", accountType);
         Select typeSelect = new Select(wait.until(ExpectedConditions.visibilityOfElementLocated(accountTypeDropdown)));
         typeSelect.selectByVisibleText(accountType.toUpperCase());
@@ -59,11 +62,13 @@ public class OpenNewAccountPage {
     }
 
     public String getSelectedAccountType() {
+
         Select typeSelect = new Select(driver.findElement(accountTypeDropdown));
         return typeSelect.getFirstSelectedOption().getText().trim();
     }
 
     public void selectExistingAccountByIndex(int index) {
+
         WebElement dropdownElement = wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountDropdown));
         // Wait until AJAX populates at least one existing account option
         wait.until(d -> new Select(dropdownElement).getOptions().size() > 0);
@@ -76,17 +81,20 @@ public class OpenNewAccountPage {
     }
 
     public String getSelectedFromAccount() {
+
         Select fromAccountSelect = new Select(driver.findElement(fromAccountDropdown));
         return fromAccountSelect.getFirstSelectedOption().getText().trim();
     }
 
     public void clickOpenNewAccountButton() {
+
         log.info("Clicking Open New Account submit button");
         wait.until(ExpectedConditions.elementToBeClickable(openNewAccountButton)).click();
         VideoRecorderUtil.captureStepFrame();
     }
 
     public boolean isAccountOpenedConfirmationDisplayed() {
+
         log.info("Verifying Account Opened confirmation section");
         WebElement resultSection = wait.until(ExpectedConditions.visibilityOfElementLocated(openAccountResultSection));
         VideoRecorderUtil.captureStepFrame();
@@ -94,14 +102,17 @@ public class OpenNewAccountPage {
     }
 
     public String getAccountOpenedHeading() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(accountOpenedHeading)).getText().trim();
     }
 
     public String getAccountOpenedMessage() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(accountOpenedMessage)).getText().trim();
     }
 
     public String getNewAccountNumber() {
+
         String newAccountId = wait.until(ExpectedConditions.visibilityOfElementLocated(newAccountIdLink)).getText().trim();
         log.info("Generated New Account Number: {}", newAccountId);
         VideoRecorderUtil.captureStepFrame();

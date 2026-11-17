@@ -32,11 +32,12 @@ public class TransferFundsPage {
     private final By toAccountResult = By.id("toAccountIdResult");
 
     public TransferFundsPage(WebDriver driver) {
+
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-
     public void navigateToTransferFundsPage() {
+
         log.info("Clicking Transfer Funds link");
         wait.until(ExpectedConditions.elementToBeClickable(transferFundsLink)).click();
         wait.until(ExpectedConditions.visibilityOfElementLocated(amountField));
@@ -44,6 +45,7 @@ public class TransferFundsPage {
     }
 
     public void enterAmount(String amount) {
+
         log.info("Entering transfer amount: ${}", amount);
         WebElement input = wait.until(ExpectedConditions.visibilityOfElementLocated(amountField));
         input.clear();
@@ -52,6 +54,7 @@ public class TransferFundsPage {
     }
 
     public String selectSourceAccountByIndex(int index) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -63,6 +66,7 @@ public class TransferFundsPage {
     }
 
     public void selectDestinationAccountByValue(String accountNumber) {
+
         WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(toAccountDropdown));
         wait.until(d -> new Select(dropdown).getOptions().size() > 0);
         Select select = new Select(dropdown);
@@ -72,30 +76,36 @@ public class TransferFundsPage {
     }
 
     public void clickTransferButton() {
+
         log.info("Clicking Transfer submit button");
         wait.until(ExpectedConditions.elementToBeClickable(transferButton)).click();
         VideoRecorderUtil.captureStepFrame();
     }
 
     public boolean isTransferCompleteDisplayed() {
+
         WebElement result = wait.until(ExpectedConditions.visibilityOfElementLocated(transferResultSection));
         VideoRecorderUtil.captureStepFrame();
         return result.isDisplayed();
     }
 
     public String getTransferCompleteHeading() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(transferCompleteHeading)).getText().trim();
     }
 
     public String getConfirmedAmount() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(transferredAmountResult)).getText().trim();
     }
 
     public String getConfirmedFromAccount() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(fromAccountResult)).getText().trim();
     }
 
     public String getConfirmedToAccount() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(toAccountResult)).getText().trim();
     }
 }

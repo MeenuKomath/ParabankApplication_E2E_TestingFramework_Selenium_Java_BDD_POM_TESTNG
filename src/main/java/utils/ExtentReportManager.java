@@ -13,6 +13,7 @@ public class ExtentReportManager {
     private static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
     public static ExtentReports getInstance() {
+
         if (extent == null) {
             String timestamp = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
             String reportPath = System.getProperty("user.dir") + "/target/extent-reports/ParaBank_Report_" + timestamp + ".html";
@@ -32,14 +33,17 @@ public class ExtentReportManager {
     }
 
     public static void setTest(ExtentTest test) {
+
         extentTest.set(test);
     }
 
     public static ExtentTest getTest() {
+
         return extentTest.get();
     }
 
     public static void unload() {
+
         extentTest.remove();
     }
 }

@@ -20,19 +20,21 @@ public class FindTransactionsSteps {
 
     @When("user navigates to the Find Transactions page")
     public void navigateToFindTransactions() {
+
         findTransactionsPage.navigateToFindTransactionsPage();
     }
 
     @And("user searches transactions by amount from Excel sheet {string} and row {int}")
     public void searchTransactionsByAmountFromExcel(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         String rawAmount = testData.get(rowIndex).get("Amount").replace("$", "").trim();
 
-        // Strip trailing ".00" for ParaBank's REST search query (e.g., "35.00" -> "35")
         String searchAmount = rawAmount.endsWith(".00") ? rawAmount.replace(".00", "") : rawAmount;
 
         String paidFromAccount = ScenarioContext.get("BILL_PAY_FROM_ACCOUNT", String.class);
         if (paidFromAccount != null && !paidFromAccount.isEmpty()) {
+
             findTransactionsPage.selectAccountByValue(paidFromAccount);
         } else {
             findTransactionsPage.selectAccountByIndex(0);
@@ -42,6 +44,7 @@ public class FindTransactionsSteps {
 
     @Then("the transaction results table should display a matching record from Excel sheet {string} and row {int}")
     public void verifyTransactionResultsFromExcel(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         Map<String, String> expectedData = testData.get(rowIndex);
 
@@ -49,18 +52,13 @@ public class FindTransactionsSteps {
         double numericAmount = Double.parseDouble(expectedData.get("Amount").replace("$", "").trim());
         String expectedFormattedAmount = String.format("$%.2f", numericAmount);
 
-        Assert.assertTrue(
-                findTransactionsPage.areTransactionResultsDisplayed(),
-                "Transaction results table should be visible with at least one matching row."
-        );
+        Assert.assertTrue(findTransactionsPage.areTransactionResultsDisplayed(),
+                "Transaction results table should be visible with at least one matching row.");
 
         List<String> rows = findTransactionsPage.getTransactionRowTexts();
-        boolean matchFound = rows.stream()
-                .anyMatch(row -> row.contains(expectedPayeeText) && row.contains(expectedFormattedAmount));
+        boolean matchFound = rows.stream().anyMatch(row -> row.contains(expectedPayeeText) && row.contains(expectedFormattedAmount));
 
-        Assert.assertTrue(
-                matchFound,
-                "Expected transaction containing '" + expectedPayeeText + "' and '" + expectedFormattedAmount + "' but found: " + rows
-        );
+        Assert.assertTrue(matchFound, "Expected transaction containing '" + expectedPayeeText +
+                "' and '" + expectedFormattedAmount + "' but found: " + rows);
     }
 }

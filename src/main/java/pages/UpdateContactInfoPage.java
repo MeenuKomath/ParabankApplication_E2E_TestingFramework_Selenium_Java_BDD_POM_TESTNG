@@ -39,17 +39,18 @@ public class UpdateContactInfoPage {
     }
 
     public void navigateToUpdateContactInfoPage() {
+
         log.info("Navigating to Update Contact Info page");
         wait.until(ExpectedConditions.elementToBeClickable(updateContactLink)).click();
         // Wait until AJAX populates the existing firstName value so it does not overwrite our edits
-        wait.until(d -> {
-            String val = d.findElement(firstNameField).getAttribute("value");
+        wait.until(d -> {String val = d.findElement(firstNameField).getAttribute("value");
             return val != null && !val.trim().isEmpty();
         });
         VideoRecorderUtil.captureStepFrame();
     }
 
     public void updateContactDetails(Map<String, String> details) {
+
         log.info("Updating contact profile details");
         clearAndType(firstNameField, details.get("FirstName"));
         clearAndType(lastNameField, details.get("LastName"));
@@ -62,6 +63,7 @@ public class UpdateContactInfoPage {
     }
 
     private void clearAndType(By locator, String value) {
+
         if (value == null) return;
         WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.clear();
@@ -69,26 +71,31 @@ public class UpdateContactInfoPage {
     }
 
     public void clickUpdateProfileButton() {
+
         log.info("Clicking Update Profile button");
         wait.until(ExpectedConditions.elementToBeClickable(updateProfileButton)).click();
         VideoRecorderUtil.captureStepFrame();
     }
 
     public boolean isProfileUpdatedDisplayed() {
+
         WebElement result = wait.until(ExpectedConditions.visibilityOfElementLocated(updateProfileResultSection));
         VideoRecorderUtil.captureStepFrame();
         return result.isDisplayed();
     }
 
     public String getResultHeading() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(resultHeading)).getText().trim();
     }
 
     public String getResultMessage() {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(resultMessage)).getText().trim();
     }
 
     public String getFieldValue(String fieldId) {
+
         return wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(fieldId))).getAttribute("value").trim();
     }
 }

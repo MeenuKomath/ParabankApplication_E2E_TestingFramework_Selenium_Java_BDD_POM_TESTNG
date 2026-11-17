@@ -19,11 +19,13 @@ public class LoginSteps {
 
     @Given("user navigates to the ParaBank login page")
     public void userNavigatesToParaBankLoginPage() {
+
         DriverManager.getDriver().get(ConfigReader.getUrl());
     }
 
     @When("user logs in using Excel sheet {string} and row {int}")
     public void userLogsInUsingExcel(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         String username = testData.get(rowIndex).get("Username");
         String password = testData.get(rowIndex).get("Password");
@@ -35,18 +37,18 @@ public class LoginSteps {
 
     @Then("user should see the expected login outcome from sheet {string} and row {int}")
     public void verifyLoginOutcome(String sheetName, int rowIndex) throws IOException {
+
         List<Map<String, String>> testData = ExcelReader.getData(EXCEL_PATH, sheetName);
         String expectedHeading = testData.get(rowIndex).get("ExpectedResult");
 
         String actualHeading = loginPage.getPageHeadingText();
-        Assert.assertTrue(actualHeading.contains(expectedHeading),
-                "Expected heading to contain '" + expectedHeading + "' but found '" + actualHeading + "'");
+        Assert.assertTrue(actualHeading.contains(expectedHeading), "Expected heading to contain '" +
+                expectedHeading + "' but found '" + actualHeading + "'");
 
         if (expectedHeading.equalsIgnoreCase("Accounts Overview")) {
             Assert.assertTrue(loginPage.isLogoutDisplayed(), "Log Out link should be visible after login.");
             Assert.assertTrue(DriverManager.getDriver().getCurrentUrl().contains("overview.htm"),
-                    "URL should redirect to overview.htm"
-            );
+                    "URL should redirect to overview.htm");
         }
     }
 }

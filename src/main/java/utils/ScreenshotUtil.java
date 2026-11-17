@@ -13,6 +13,7 @@ import java.util.Date;
 public class ScreenshotUtil {
 
     public static String captureScreenshot(WebDriver driver, String testName) {
+
         String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String cleanName = testName.replaceAll("[^a-zA-Z0-9_-]", "_");
         String fileName = cleanName + "_" + timestamp + ".png";
